@@ -10,22 +10,31 @@ var images = ["assets/images/crystal1.jpg", "assets/images/crystal2.jpg"] // set
 // set goalNumber (google: how do I create a random number in js - eg math.random)
 // loop through images array
 // for every index, create image on screen
-// add class
-// add src
-// add crystal value as attribute
-// append image to screen
+    // add class
+    // add src
+    // add crystal value as attribute
+    // append image to screen
 
-function makeDivs() {
+    function makeDivs() {
     var array = [1, 2, 3, 4];
-    for  (var i=0; i<array.length; i++) {
+    for (var i=0; i<array.length; i++) {
         var div = $("<div>");
-        div.addClass("crystal")
+        div.addClass("crystal");
         div.attr("crystalVal", Math.floor(Math.random() * 11));
+        div.attr("id", i);
         $(".divContainer").append(div);
     }
 }
 
+
+$(".crystal").on("click", function () {
+    console.log(this);
+    console.log($(this));
+});
+
 makeDivs();
+
+
 
 // create click event on crystals
 // use $(this) to capture value attribute (.attr)
@@ -33,4 +42,7 @@ makeDivs();
 // create conditions to check for win or loss using if statements (which can then go into a function)
     // if userScore === goalNumber
     // if userScore > goalNumber
-    // recall makeDivs to reset values
+    // if win or loss, restart game (recall makeDivs to reset values)
+    // increment wins or losses
+
+// Overall: just need a few globalVariables, one function and one click event. TEST EARLY TEST OFTEN
