@@ -1,48 +1,62 @@
-// Global Variables:
-// wins, losses, goalNumber, userScore, array of image sources
-var wins
-var losses
-var images = ["assets/images/crystal1.jpg", "assets/images/crystal2.jpg"] // set the src to that link
+// create an array of crystal image links
+var crystalImages = ["assets/images/blue.png", "assets/images/green.png", "assets/images/red.png", "assets/images/yellow.png"];
 
-// Functions:
+// other globalVariables
+var wins = 0;
+var losses = 0;
+var userScore = 0;
+var targetNumber = 0;
 
-// Function 1: 
-// set goalNumber (google: how do I create a random number in js - eg math.random)
-// loop through images array
-// for every index, create image on screen
-    // add class
-    // add src
-    // add crystal value as attribute
-    // append image to screen
+function generateCrystalImages() {
+    // loop through crystalImages
+    crystalImages.forEach(function (imageUrl, index) {
+        var randomNum = Math.floor(Math.random() * 12) + 1;
+        console.log(randomNum);
+        // for each one:
+        // create a new 'img' element
+        var crystal = $("<img>");
+        // set src equal to link
+        crystal.attr("src", imageUrl);
+        // set random value (points)
+        crystal.attr("data-points", randomNum);
+        // add class
+        crystal.addClass("crystal");
+        // put the crystal image on the page
+        $("#images").append(crystal);
+    });
 
-    function makeDivs() {
-    var array = [1, 2, 3, 4];
-    for (var i=0; i<array.length; i++) {
-        var div = $("<div>");
-        div.addClass("crystal");
-        div.attr("crystalVal", Math.floor(Math.random() * 11));
-        div.attr("id", i);
-        $(".divContainer").append(div);
-    }
-}
+};
 
+function crystalCollector() {
+    targetNumber = Math.floor(Math.random() * 102) + 19;
+    $("#target-number").html(targetNumber);
+    generateCrystalImages();
+    $(".crystal").on("click", function () {
+        var crystalVal = $(this).attr("data-points");
+        crystalVal = parseInt(crystalVal);
+        userScore += crystalVal;
+        $("#your-score").html(userScore);
+        checkWin();
+    });
+};
 
-$(".crystal").on("click", function () {
-    console.log(this);
-    console.log($(this));
-});
+function checkWin () {
+    if (userScore === targetNumber) {
+        wins++;
+        $("#wins").html(wins);
+        reset();
+    } else if (userScore > targetNumber) {
+        losses++;
+        $("#losses").html(losses);
+        reset();
+    };
+};
 
-makeDivs();
+function reset(){
+    userScore = 0;
+    $("#your-score").html(userScore);
+    $("#images").empty();
+    crystalCollector();
+};
 
-
-
-// create click event on crystals
-// use $(this) to capture value attribute (.attr)
-// add clicked value to userScore
-// create conditions to check for win or loss using if statements (which can then go into a function)
-    // if userScore === goalNumber
-    // if userScore > goalNumber
-    // if win or loss, restart game (recall makeDivs to reset values)
-    // increment wins or losses
-
-// Overall: just need a few globalVariables, one function and one click event. TEST EARLY TEST OFTEN
+crystalCollector();
